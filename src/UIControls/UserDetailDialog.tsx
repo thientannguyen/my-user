@@ -1,11 +1,19 @@
 import React from 'react';
 import {
     Button,
+    createStyles,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     makeStyles,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
+    Typography,
+    withStyles,
 } from '@material-ui/core';
 import { UserData } from '../Models/UserData';
 
@@ -15,8 +23,20 @@ export interface IUserDetailProps {
     userDetail: UserData | undefined;
 }
 
+const StyledTableCell = withStyles(() =>
+    createStyles({
+        root: {
+            borderBottom: 'none',
+        },
+    })
+)(TableCell);
+
 const useStyles = makeStyles({
     titleArea: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: 'lightgray',
     },
 
@@ -34,7 +54,12 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        margin: '2vh',
     },
+
+    firstColumn: {},
+
+    secondColumn: { color: '#00994D' },
 });
 
 function UserDetailDialog(props: IUserDetailProps) {
@@ -54,6 +79,76 @@ function UserDetailDialog(props: IUserDetailProps) {
             </DialogTitle>
             <DialogContent className={localStyle.contentArea}>
                 <img alt="avatar" src={props.userDetail?.avatar} />
+                <TableContainer>
+                    <Table aria-label="User details" id="tbl-user-detail">
+                        <TableBody>
+                            <TableRow key="id">
+                                <StyledTableCell
+                                    align="right"
+                                    className={localStyle.firstColumn}
+                                >
+                                    <Typography>ID:</Typography>
+                                </StyledTableCell>
+                                <StyledTableCell
+                                    align="left"
+                                    className={localStyle.secondColumn}
+                                >
+                                    <Typography>
+                                        {props.userDetail?.id}
+                                    </Typography>
+                                </StyledTableCell>
+                            </TableRow>
+                            <TableRow key="firstName">
+                                <StyledTableCell
+                                    align="right"
+                                    className={localStyle.firstColumn}
+                                >
+                                    <Typography>First Name:</Typography>
+                                </StyledTableCell>
+                                <StyledTableCell
+                                    align="left"
+                                    className={localStyle.secondColumn}
+                                >
+                                    <Typography>
+                                        {props.userDetail?.first_name}
+                                    </Typography>
+                                </StyledTableCell>
+                            </TableRow>
+                            <TableRow key="lastName">
+                                <StyledTableCell
+                                    align="right"
+                                    className={localStyle.firstColumn}
+                                >
+                                    <Typography>Last Name:</Typography>
+                                </StyledTableCell>
+                                <StyledTableCell
+                                    align="left"
+                                    className={localStyle.secondColumn}
+                                >
+                                    <Typography>
+                                        {props.userDetail?.last_name}
+                                    </Typography>
+                                </StyledTableCell>
+                            </TableRow>
+                            <TableRow key="email">
+                                <StyledTableCell
+                                    align="right"
+                                    className={localStyle.firstColumn}
+                                >
+                                    <Typography>Email:</Typography>
+                                </StyledTableCell>
+                                <StyledTableCell
+                                    align="left"
+                                    className={localStyle.secondColumn}
+                                >
+                                    <Typography>
+                                        {props.userDetail?.email}
+                                    </Typography>
+                                </StyledTableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </DialogContent>
             <DialogActions className={localStyle.actionArea}>
                 <Button variant="outlined" onClick={props.onCloseAction}>
