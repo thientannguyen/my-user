@@ -8,6 +8,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import Pagination from '@material-ui/lab/Pagination';
 import TableRow from '@material-ui/core/TableRow';
+import UserDetailDialog from './UserDetailDialog';
+import { UserData } from '../Models/UserData';
 
 interface Column {
     id: 'id' | 'first_name' | 'last_name' | 'email';
@@ -30,14 +32,6 @@ const columns: Column[] = [
     { id: 'last_name', label: 'FAMILY NAME', align: 'center', minWidth: 150 },
     { id: 'email', label: 'EMAIL', align: 'center', minWidth: 200 },
 ];
-
-interface Data {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    avatar: string;
-}
 
 const useStyles = makeStyles({
     primaryArea: {
@@ -125,10 +119,12 @@ const StickyTableCell = withStyles(() => ({
 
 export default function UserPage() {
     const localStyle = useStyles();
-    const [data, setData] = useState<Data[]>([]);
+    const [userData, setUserData] = useState<UserData[]>([]);
     const page = useRef(0);
     const totalPage = useRef(0);
     const fetchUser = useRef((currentPage: number) => {});
+    const [showUserDetail, setShowUserDetail] = useState(false);
+    const currentUser = useRef<UserData>();
 
     useEffect(() => {
         fetchUser.current(1);
@@ -138,22 +134,32 @@ export default function UserPage() {
         const result = await axios.get(
             `https://reqres.in/api/users?page=${currentPage}`
         );
-        console.log(result.data);
         page.current = result.data.page;
         totalPage.current = result.data.total_pages;
-        setData(result.data.data);
+        setUserData(result.data.data);
     };
 
     const handlePageChange = (
         event: React.ChangeEvent<unknown>,
         value: number
     ) => {
-        console.log(value);
         fetchUser.current(value);
+    };
+
+    const handleCellClick = (data: UserData) => {
+        currentUser.current = data;
+        setShowUserDetail(true);
     };
 
     return (
         <div className={localStyle.primaryArea}>
+            <UserDetailDialog
+                displayState={showUserDetail}
+                onCloseAction={() => {
+                    setShowUserDetail(false);
+                }}
+                userDetail={currentUser.current}
+            />
             <TableContainer className={localStyle.tableContainer}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -182,7 +188,7 @@ export default function UserPage() {
                     </TableHead>
 
                     <TableBody className={localStyle.tableBody}>
-                        {data.map((row, index) => {
+                        {userData.map((row, index) => {
                             return (
                                 <TableRow
                                     hover
@@ -204,6 +210,10 @@ export default function UserPage() {
                                         align={firstColumn.align}
                                         style={{
                                             minWidth: firstColumn.minWidth,
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() => {
+                                            handleCellClick(row);
                                         }}
                                     >
                                         {row[firstColumn.id]}
@@ -216,6 +226,10 @@ export default function UserPage() {
                                                 align={column.align}
                                                 style={{
                                                     minWidth: column.minWidth,
+                                                    cursor: 'pointer',
+                                                }}
+                                                onClick={() => {
+                                                    handleCellClick(row);
                                                 }}
                                             >
                                                 {column.format &&
