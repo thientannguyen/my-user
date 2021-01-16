@@ -86,7 +86,7 @@ const useStyles = makeStyles({
 const StyledTableCell = withStyles(() =>
     createStyles({
         head: {
-            backgroundColor: '#000',
+            backgroundColor: '#4d4d4d',
             color: '#FFF',
             border: '1px solid rgba(224, 224, 224, 1)',
         },
@@ -103,7 +103,7 @@ const StickyTableCell = withStyles(() => ({
         left: 0,
         position: 'sticky',
         zIndex: 10,
-        backgroundColor: '#000',
+        backgroundColor: '#4d4d4d',
         color: '#FFF',
         border: '1px solid rgba(224, 224, 224, 1)',
     },
