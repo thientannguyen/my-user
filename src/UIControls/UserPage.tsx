@@ -45,7 +45,7 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: ' center',
-        maxWidth: 500,
+        maxWidth: 600,
         maxHeight: 360,
     },
 
@@ -108,7 +108,7 @@ const StickyTableCell = withStyles(() => ({
     head: {
         left: 0,
         position: 'sticky',
-        zIndex: 5,
+        zIndex: 10,
         backgroundColor: '#000',
         color: '#FFF',
         border: '1px solid rgba(224, 224, 224, 1)',
@@ -116,7 +116,7 @@ const StickyTableCell = withStyles(() => ({
     body: {
         left: 0,
         position: 'sticky',
-        zIndex: 5,
+        zIndex: 10,
         color: '#00994D',
         fontWeight: 500,
         border: '1px solid rgba(224, 224, 224, 1)',
@@ -126,33 +126,31 @@ const StickyTableCell = withStyles(() => ({
 export default function UserPage() {
     const localStyle = useStyles();
     const [data, setData] = useState<Data[]>([]);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(0);
-    const [totalPage, setTotalPage] = useState(0);
-    const fetchUser = useRef(() => {});
+    const page = useRef(0);
+    const totalPage = useRef(0);
+    const fetchUser = useRef((currentPage: number) => {});
 
     useEffect(() => {
-        fetchUser.current();
+        fetchUser.current(1);
     }, []);
 
-    fetchUser.current = async () => {
-        const result = await axios.get(`https://reqres.in/api/users`);
+    fetchUser.current = async (currentPage: number) => {
+        const result = await axios.get(
+            `https://reqres.in/api/users?page=${currentPage}`
+        );
+        console.log(result.data);
+        page.current = result.data.page;
+        totalPage.current = result.data.total_pages;
         setData(result.data.data);
-        setPage(result.data.page);
-        setRowsPerPage(result.data.per_page);
-        setTotalPage(result.data.total_pages);
     };
 
-    // const handleChangePage = (event: unknown, newPage: number) => {
-    //     setPage(newPage);
-    // };
-
-    // const handleChangeRowsPerPage = (
-    //     event: React.ChangeEvent<HTMLInputElement>
-    // ) => {
-    //     setRowsPerPage(+event.target.value);
-    //     setPage(1);
-    // };
+    const handlePageChange = (
+        event: React.ChangeEvent<unknown>,
+        value: number
+    ) => {
+        console.log(value);
+        fetchUser.current(value);
+    };
 
     return (
         <div className={localStyle.primaryArea}>
@@ -184,76 +182,61 @@ export default function UserPage() {
                     </TableHead>
 
                     <TableBody className={localStyle.tableBody}>
-                        {data
-                            .slice(
-                                (page - 1) * rowsPerPage,
-                                (page - 1) * rowsPerPage + rowsPerPage
-                            )
-                            .map((row, index) => {
-                                return (
-                                    <TableRow
-                                        hover
-                                        role="checkbox"
-                                        tabIndex={-1}
-                                        key={row.id}
-                                        style={
-                                            index % 2
-                                                ? {
-                                                      backgroundColor:
-                                                          '#F0F0F0',
-                                                  }
-                                                : {
-                                                      backgroundColor: '#FFF',
-                                                  }
-                                        }
+                        {data.map((row, index) => {
+                            return (
+                                <TableRow
+                                    hover
+                                    role="checkbox"
+                                    tabIndex={-1}
+                                    key={row.id}
+                                    style={
+                                        index % 2
+                                            ? {
+                                                  backgroundColor: '#F0F0F0',
+                                              }
+                                            : {
+                                                  backgroundColor: '#FFF',
+                                              }
+                                    }
+                                >
+                                    <StickyTableCell
+                                        key={firstColumn.id}
+                                        align={firstColumn.align}
+                                        style={{
+                                            minWidth: firstColumn.minWidth,
+                                        }}
                                     >
-                                        <StickyTableCell
-                                            key={firstColumn.id}
-                                            align={firstColumn.align}
-                                            style={{
-                                                minWidth: firstColumn.minWidth,
-                                            }}
-                                        >
-                                            {row[firstColumn.id]}
-                                        </StickyTableCell>
-                                        {columns.map((column) => {
-                                            const value = row[column.id];
-                                            return (
-                                                <StyledTableCell
-                                                    key={column.id}
-                                                    align={column.align}
-                                                    style={{
-                                                        minWidth:
-                                                            column.minWidth,
-                                                    }}
-                                                >
-                                                    {column.format &&
-                                                    typeof value === 'number'
-                                                        ? column.format(value)
-                                                        : value}
-                                                </StyledTableCell>
-                                            );
-                                        })}
-                                    </TableRow>
-                                );
-                            })}
+                                        {row[firstColumn.id]}
+                                    </StickyTableCell>
+                                    {columns.map((column) => {
+                                        const value = row[column.id];
+                                        return (
+                                            <StyledTableCell
+                                                key={column.id}
+                                                align={column.align}
+                                                style={{
+                                                    minWidth: column.minWidth,
+                                                }}
+                                            >
+                                                {column.format &&
+                                                typeof value === 'number'
+                                                    ? column.format(value)
+                                                    : value}
+                                            </StyledTableCell>
+                                        );
+                                    })}
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
-            {/* <TablePagination
-                rowsPerPageOptions={[6]}
-                component="div"
-                count={data.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            /> */}
             <Pagination
-                count={totalPage}
+                count={totalPage.current}
                 showFirstButton
                 showLastButton
                 classes={{ ul: localStyle.paginationItem }}
+                onChange={handlePageChange}
             />
         </div>
     );
