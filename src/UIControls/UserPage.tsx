@@ -138,77 +138,68 @@ export default function UserPage() {
     return (
         <div className={localStyle.primaryArea}>
             <TableContainer className={localStyle.tableContainer}>
-                <div className={localStyle.tableHeader}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <StyledTableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
+                <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                        <TableRow>
+                            {columns.map((column) => (
+                                <StyledTableCell
+                                    key={column.id}
+                                    align={column.align}
+                                    style={{ minWidth: column.minWidth }}
+                                >
+                                    {column.label}
+                                </StyledTableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+
+                    <TableBody className={localStyle.tableBody}>
+                        {data
+                            .slice(
+                                (page - 1) * rowsPerPage,
+                                (page - 1) * rowsPerPage + rowsPerPage
+                            )
+                            .map((row, index) => {
+                                return (
+                                    <TableRow
+                                        hover
+                                        role="checkbox"
+                                        tabIndex={-1}
+                                        key={row.id}
+                                        style={
+                                            index % 2
+                                                ? {
+                                                      backgroundColor:
+                                                          '#F0F0F0',
+                                                  }
+                                                : {
+                                                      backgroundColor: '#FFF',
+                                                  }
+                                        }
                                     >
-                                        {column.label}
-                                    </StyledTableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                    </Table>
-                </div>
-                <div className={localStyle.tableBodyContainer}>
-                    <Table className={localStyle.tableBody}>
-                        <TableBody>
-                            {data
-                                .slice(
-                                    (page - 1) * rowsPerPage,
-                                    (page - 1) * rowsPerPage + rowsPerPage
-                                )
-                                .map((row, index) => {
-                                    return (
-                                        <TableRow
-                                            hover
-                                            role="checkbox"
-                                            tabIndex={-1}
-                                            key={row.id}
-                                            style={
-                                                index % 2
-                                                    ? {
-                                                          backgroundColor:
-                                                              '#F0F0F0',
-                                                      }
-                                                    : {
-                                                          backgroundColor:
-                                                              '#FFF',
-                                                      }
-                                            }
-                                        >
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (
-                                                    <StyledTableCell
-                                                        key={column.id}
-                                                        align={column.align}
-                                                        style={{
-                                                            minWidth:
-                                                                column.minWidth,
-                                                        }}
-                                                    >
-                                                        {column.format &&
-                                                        typeof value ===
-                                                            'number'
-                                                            ? column.format(
-                                                                  value
-                                                              )
-                                                            : value}
-                                                    </StyledTableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
-                        </TableBody>
-                    </Table>
-                </div>
+                                        {columns.map((column) => {
+                                            const value = row[column.id];
+                                            return (
+                                                <StyledTableCell
+                                                    key={column.id}
+                                                    align={column.align}
+                                                    style={{
+                                                        minWidth:
+                                                            column.minWidth,
+                                                    }}
+                                                >
+                                                    {column.format &&
+                                                    typeof value === 'number'
+                                                        ? column.format(value)
+                                                        : value}
+                                                </StyledTableCell>
+                                            );
+                                        })}
+                                    </TableRow>
+                                );
+                            })}
+                    </TableBody>
+                </Table>
             </TableContainer>
             {/* <TablePagination
                 rowsPerPageOptions={[6]}
