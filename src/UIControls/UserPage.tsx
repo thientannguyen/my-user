@@ -17,14 +17,15 @@ interface Column {
     format?: (value: number) => string;
 }
 
+const firstColumn: Column = {
+    id: 'id',
+    label: 'ID',
+    minWidth: 50,
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
+};
+
 const columns: Column[] = [
-    {
-        id: 'id',
-        label: 'ID',
-        minWidth: 50,
-        align: 'center',
-        format: (value: number) => value.toLocaleString('en-US'),
-    },
     { id: 'first_name', label: 'GIVEN NAME', align: 'center', minWidth: 150 },
     { id: 'last_name', label: 'FAMILY NAME', align: 'center', minWidth: 150 },
     { id: 'email', label: 'EMAIL', align: 'center', minWidth: 200 },
@@ -44,7 +45,7 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: ' center',
-        maxWidth: 600,
+        maxWidth: 500,
         maxHeight: 360,
     },
 
@@ -96,13 +97,31 @@ const StyledTableCell = withStyles(() =>
             border: '1px solid rgba(224, 224, 224, 1)',
         },
         body: {
-            fontSize: 14,
             color: '#00994D',
             fontWeight: 500,
             border: '1px solid rgba(224, 224, 224, 1)',
         },
     })
 )(TableCell);
+
+const StickyTableCell = withStyles(() => ({
+    head: {
+        left: 0,
+        position: 'sticky',
+        zIndex: 5,
+        backgroundColor: '#000',
+        color: '#FFF',
+        border: '1px solid rgba(224, 224, 224, 1)',
+    },
+    body: {
+        left: 0,
+        position: 'sticky',
+        zIndex: 5,
+        color: '#00994D',
+        fontWeight: 500,
+        border: '1px solid rgba(224, 224, 224, 1)',
+    },
+}))(TableCell);
 
 export default function UserPage() {
     const localStyle = useStyles();
@@ -141,11 +160,22 @@ export default function UserPage() {
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
+                            <StickyTableCell
+                                key={firstColumn.id}
+                                align={firstColumn.align}
+                                style={{
+                                    minWidth: firstColumn.minWidth,
+                                }}
+                            >
+                                {firstColumn.label}
+                            </StickyTableCell>
                             {columns.map((column) => (
                                 <StyledTableCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{ minWidth: column.minWidth }}
+                                    style={{
+                                        minWidth: column.minWidth,
+                                    }}
                                 >
                                     {column.label}
                                 </StyledTableCell>
@@ -177,6 +207,15 @@ export default function UserPage() {
                                                   }
                                         }
                                     >
+                                        <StickyTableCell
+                                            key={firstColumn.id}
+                                            align={firstColumn.align}
+                                            style={{
+                                                minWidth: firstColumn.minWidth,
+                                            }}
+                                        >
+                                            {row[firstColumn.id]}
+                                        </StickyTableCell>
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
