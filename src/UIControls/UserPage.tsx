@@ -44,31 +44,7 @@ const useStyles = makeStyles({
     },
 
     tableContainer: {
-        //direction: 'rtl',
         overflow: 'auto',
-
-        // transform: 'rotateX(180deg)',
-        // msTransform: 'rotateX(180deg)' /* IE 9 */,
-        // webkitTransform: 'rotateX(180deg)' /* Safari and Chrome */,
-    },
-
-    tableHeader: {
-        //maxWidth: 350,
-        direction: 'ltr',
-    },
-
-    tableBodyContainer: {
-        direction: 'ltr',
-        //direction: 'rtl',
-        //overflowY: 'auto',
-        //overflowX: 'initial',
-        //maxHeight: 120,
-        //maxWidth: 500,
-        //maxWidth: 350,
-    },
-
-    tableBody: {
-        direction: 'ltr',
     },
 
     paginationItem: {
@@ -187,7 +163,7 @@ export default function UserPage() {
                         </TableRow>
                     </TableHead>
 
-                    <TableBody className={localStyle.tableBody}>
+                    <TableBody>
                         {userData.map((row, index) => {
                             return (
                                 <TableRow

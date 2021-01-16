@@ -57,8 +57,6 @@ const useStyles = makeStyles({
         margin: '2vh',
     },
 
-    firstColumn: {},
-
     secondColumn: { color: '#00994D' },
 });
 
@@ -83,10 +81,7 @@ function UserDetailDialog(props: IUserDetailProps) {
                     <Table aria-label="User details" id="tbl-user-detail">
                         <TableBody>
                             <TableRow key="id">
-                                <StyledTableCell
-                                    align="right"
-                                    className={localStyle.firstColumn}
-                                >
+                                <StyledTableCell align="right">
                                     <Typography>ID:</Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
@@ -99,10 +94,7 @@ function UserDetailDialog(props: IUserDetailProps) {
                                 </StyledTableCell>
                             </TableRow>
                             <TableRow key="firstName">
-                                <StyledTableCell
-                                    align="right"
-                                    className={localStyle.firstColumn}
-                                >
+                                <StyledTableCell align="right">
                                     <Typography>First Name:</Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
@@ -115,10 +107,7 @@ function UserDetailDialog(props: IUserDetailProps) {
                                 </StyledTableCell>
                             </TableRow>
                             <TableRow key="lastName">
-                                <StyledTableCell
-                                    align="right"
-                                    className={localStyle.firstColumn}
-                                >
+                                <StyledTableCell align="right">
                                     <Typography>Last Name:</Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
@@ -131,10 +120,7 @@ function UserDetailDialog(props: IUserDetailProps) {
                                 </StyledTableCell>
                             </TableRow>
                             <TableRow key="email">
-                                <StyledTableCell
-                                    align="right"
-                                    className={localStyle.firstColumn}
-                                >
+                                <StyledTableCell align="right">
                                     <Typography>Email:</Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
