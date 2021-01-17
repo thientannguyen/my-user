@@ -59,14 +59,20 @@ const useStyles = makeStyles({
     },
 });
 
-const StyledTableCell = withStyles(() =>
+const StyledTableCellHead = withStyles(() =>
     createStyles({
         head: {
             backgroundColor: '#4d4d4d',
             color: '#FFF',
             border: '1px solid rgba(224, 224, 224, 1)',
         },
+    })
+)(TableCell);
+
+const StyledTableCellEven = withStyles(() =>
+    createStyles({
         body: {
+            backgroundColor: '#F0F0F0',
             color: '#00994D',
             fontWeight: 500,
             border: '1px solid rgba(224, 224, 224, 1)',
@@ -74,19 +80,46 @@ const StyledTableCell = withStyles(() =>
     })
 )(TableCell);
 
-const StickyTableCell = withStyles(() => ({
+const StyledTableCellOdd = withStyles(() =>
+    createStyles({
+        body: {
+            backgroundColor: '#FFF',
+            color: '#00994D',
+            fontWeight: 500,
+            border: '1px solid rgba(224, 224, 224, 1)',
+        },
+    })
+)(TableCell);
+
+const StickyTableCellHead = withStyles(() => ({
     head: {
         left: 0,
         position: 'sticky',
-        zIndex: 10,
+        zIndex: 5,
         backgroundColor: '#4d4d4d',
         color: '#FFF',
         border: '1px solid rgba(224, 224, 224, 1)',
     },
+}))(TableCell);
+
+const StickyTableCellBodyEven = withStyles(() => ({
     body: {
         left: 0,
         position: 'sticky',
-        zIndex: 10,
+        zIndex: 1,
+        backgroundColor: '#F0F0F0',
+        color: '#00994D',
+        fontWeight: 500,
+        border: '1px solid rgba(224, 224, 224, 1)',
+    },
+}))(TableCell);
+
+const StickyTableCellBodyOdd = withStyles(() => ({
+    body: {
+        left: 0,
+        position: 'sticky',
+        zIndex: 1,
+        backgroundColor: '#FFF',
         color: '#00994D',
         fontWeight: 500,
         border: '1px solid rgba(224, 224, 224, 1)',
@@ -140,7 +173,7 @@ export default function UserPage() {
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
-                            <StickyTableCell
+                            <StickyTableCellHead
                                 key={firstColumn.id}
                                 align={firstColumn.align}
                                 style={{
@@ -148,9 +181,9 @@ export default function UserPage() {
                                 }}
                             >
                                 {firstColumn.label}
-                            </StickyTableCell>
+                            </StickyTableCellHead>
                             {columns.map((column) => (
-                                <StyledTableCell
+                                <StyledTableCellHead
                                     key={column.id}
                                     align={column.align}
                                     style={{
@@ -158,7 +191,7 @@ export default function UserPage() {
                                     }}
                                 >
                                     {column.label}
-                                </StyledTableCell>
+                                </StyledTableCellHead>
                             ))}
                         </TableRow>
                     </TableHead>
@@ -171,33 +204,40 @@ export default function UserPage() {
                                     role="checkbox"
                                     tabIndex={-1}
                                     key={row.id}
-                                    style={
-                                        index % 2
-                                            ? {
-                                                  backgroundColor: '#F0F0F0',
-                                              }
-                                            : {
-                                                  backgroundColor: '#FFF',
-                                              }
-                                    }
                                 >
-                                    <StickyTableCell
-                                        key={firstColumn.id}
-                                        align={firstColumn.align}
-                                        style={{
-                                            minWidth: firstColumn.minWidth,
-                                            cursor: 'pointer',
-                                        }}
-                                        onClick={() => {
-                                            handleCellClick(row);
-                                        }}
-                                    >
-                                        {row[firstColumn.id]}
-                                    </StickyTableCell>
+                                    {index % 2 ? (
+                                        <StickyTableCellBodyEven
+                                            key={firstColumn.id}
+                                            align={firstColumn.align}
+                                            style={{
+                                                minWidth: firstColumn.minWidth,
+                                                cursor: 'pointer',
+                                            }}
+                                            onClick={() => {
+                                                handleCellClick(row);
+                                            }}
+                                        >
+                                            {row[firstColumn.id]}
+                                        </StickyTableCellBodyEven>
+                                    ) : (
+                                        <StickyTableCellBodyOdd
+                                            key={firstColumn.id}
+                                            align={firstColumn.align}
+                                            style={{
+                                                minWidth: firstColumn.minWidth,
+                                                cursor: 'pointer',
+                                            }}
+                                            onClick={() => {
+                                                handleCellClick(row);
+                                            }}
+                                        >
+                                            {row[firstColumn.id]}
+                                        </StickyTableCellBodyOdd>
+                                    )}
                                     {columns.map((column) => {
                                         const value = row[column.id];
-                                        return (
-                                            <StyledTableCell
+                                        return index % 2 ? (
+                                            <StyledTableCellEven
                                                 key={column.id}
                                                 align={column.align}
                                                 style={{
@@ -212,7 +252,24 @@ export default function UserPage() {
                                                 typeof value === 'number'
                                                     ? column.format(value)
                                                     : value}
-                                            </StyledTableCell>
+                                            </StyledTableCellEven>
+                                        ) : (
+                                            <StyledTableCellOdd
+                                                key={column.id}
+                                                align={column.align}
+                                                style={{
+                                                    minWidth: column.minWidth,
+                                                    cursor: 'pointer',
+                                                }}
+                                                onClick={() => {
+                                                    handleCellClick(row);
+                                                }}
+                                            >
+                                                {column.format &&
+                                                typeof value === 'number'
+                                                    ? column.format(value)
+                                                    : value}
+                                            </StyledTableCellOdd>
                                         );
                                     })}
                                 </TableRow>
