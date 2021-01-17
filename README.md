@@ -44,7 +44,7 @@ The Application Runs on **localhost:3000**
 
 #### Components
 
-1. **UserPage** Component : This Component displays a list of users. This Component gets the data from https://reqres.in/
+1. **UserPage** Component : This Component displays a list of users, input is maxWidth and maxHeight of table. This Component gets the data from https://reqres.in/
 
 2. **UserDetailDialog** Component : This Component Displays the details of the selected user. This Component gets its data from _UserPage_ Component
 

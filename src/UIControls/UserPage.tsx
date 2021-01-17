@@ -11,6 +11,11 @@ import TableRow from '@material-ui/core/TableRow';
 import UserDetailDialog from './UserDetailDialog';
 import { UserData } from '../Models/UserData';
 
+export interface IUserPageProps {
+    maxWidth: string;
+    maxHeight: string;
+}
+
 interface Column {
     id: 'id' | 'first_name' | 'last_name' | 'email';
     label: string;
@@ -22,15 +27,15 @@ interface Column {
 const firstColumn: Column = {
     id: 'id',
     label: 'ID',
-    minWidth: 50,
+    minWidth: 20,
     align: 'center',
     format: (value: number) => value.toLocaleString('en-US'),
 };
 
 const columns: Column[] = [
-    { id: 'first_name', label: 'GIVEN NAME', align: 'center', minWidth: 150 },
-    { id: 'last_name', label: 'FAMILY NAME', align: 'center', minWidth: 150 },
-    { id: 'email', label: 'EMAIL', align: 'center', minWidth: 200 },
+    { id: 'first_name', label: 'GIVEN NAME', align: 'center', minWidth: 100 },
+    { id: 'last_name', label: 'FAMILY NAME', align: 'center', minWidth: 100 },
+    { id: 'email', label: 'EMAIL', align: 'center', minWidth: 150 },
 ];
 
 const useStyles = makeStyles({
@@ -39,8 +44,7 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: ' center',
-        maxWidth: 600,
-        maxHeight: 360,
+        gap: '2vh',
     },
 
     tableContainer: {
@@ -126,7 +130,7 @@ const StickyTableCellBodyOdd = withStyles(() => ({
     },
 }))(TableCell);
 
-export default function UserPage() {
+export default function UserPage(props: IUserPageProps) {
     const localStyle = useStyles();
     const [userData, setUserData] = useState<UserData[]>([]);
     const page = useRef(0);
@@ -169,7 +173,10 @@ export default function UserPage() {
                 }}
                 userDetail={currentUser.current}
             />
-            <TableContainer className={localStyle.tableContainer}>
+            <TableContainer
+                className={localStyle.tableContainer}
+                style={{ maxWidth: props.maxWidth, maxHeight: props.maxHeight }}
+            >
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
