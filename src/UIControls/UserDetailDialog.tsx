@@ -15,12 +15,19 @@ import {
     Typography,
     withStyles,
 } from '@material-ui/core';
-import { UserData } from '../Models/UserData';
 
 export interface IUserDetailProps {
     displayState: boolean;
     onCloseAction: () => void;
     userDetail: UserData | undefined;
+}
+
+export interface UserData {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    avatar: string;
 }
 
 const StyledTableCell = withStyles(() =>

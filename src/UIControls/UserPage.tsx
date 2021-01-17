@@ -8,8 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import Pagination from '@material-ui/lab/Pagination';
 import TableRow from '@material-ui/core/TableRow';
-import UserDetailDialog from './UserDetailDialog';
-import { UserData } from '../Models/UserData';
+import UserDetailDialog, { UserData } from './UserDetailDialog';
 
 export interface IUserPageProps {
     maxWidth: string;
