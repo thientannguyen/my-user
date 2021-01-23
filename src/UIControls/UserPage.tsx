@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import { createStyles, makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -62,70 +62,71 @@ const useStyles = makeStyles({
     },
 });
 
-const StyledTableCellHead = withStyles(() =>
-    createStyles({
-        head: {
-            backgroundColor: '#4d4d4d',
-            color: '#FFF',
-            border: '1px solid rgba(224, 224, 224, 1)',
-        },
-    })
-)(TableCell);
+const commonCellStyle = {
+    fontWeight: 500,
+    border: '1px solid rgba(224, 224, 224, 1)',
+};
 
-const StyledTableCellEven = withStyles(() =>
-    createStyles({
-        body: {
-            backgroundColor: '#F0F0F0',
-            color: '#00994D',
-            fontWeight: 500,
-            border: '1px solid rgba(224, 224, 224, 1)',
-        },
-    })
-)(TableCell);
+const headerColorStyle = {
+    backgroundColor: '#4d4d4d',
+    color: '#FFF',
+};
 
-const StyledTableCellOdd = withStyles(() =>
-    createStyles({
-        body: {
-            backgroundColor: '#FFF',
-            color: '#00994D',
-            fontWeight: 500,
-            border: '1px solid rgba(224, 224, 224, 1)',
-        },
-    })
-)(TableCell);
+const bodyEvenColorStyle = {
+    backgroundColor: '#F0F0F0',
+    color: '#00994D',
+};
+
+const bodyOddColorStyle = {
+    backgroundColor: '#FFF',
+    color: '#00994D',
+};
+
+const StyledTableCellHead = withStyles(() => ({
+    head: {
+        ...headerColorStyle,
+        ...commonCellStyle,
+    },
+}))(TableCell);
+
+const StyledTableCellEven = withStyles(() => ({
+    body: {
+        ...bodyEvenColorStyle,
+        ...commonCellStyle,
+    },
+}))(TableCell);
+
+const StyledTableCellOdd = withStyles(() => ({
+    body: {
+        ...bodyOddColorStyle,
+        ...commonCellStyle,
+    },
+}))(TableCell);
 
 const StickyTableCellHead = withStyles(() => ({
     head: {
-        left: 0,
         position: 'sticky',
         zIndex: 5,
-        backgroundColor: '#4d4d4d',
-        color: '#FFF',
-        border: '1px solid rgba(224, 224, 224, 1)',
+        ...headerColorStyle,
+        ...commonCellStyle,
     },
 }))(TableCell);
 
 const StickyTableCellBodyEven = withStyles(() => ({
     body: {
-        left: 0,
         position: 'sticky',
         zIndex: 1,
-        backgroundColor: '#F0F0F0',
-        color: '#00994D',
-        fontWeight: 500,
-        border: '1px solid rgba(224, 224, 224, 1)',
+        ...bodyEvenColorStyle,
+        ...commonCellStyle,
     },
 }))(TableCell);
 
 const StickyTableCellBodyOdd = withStyles(() => ({
     body: {
-        left: 0,
         position: 'sticky',
         zIndex: 1,
-        backgroundColor: '#FFF',
-        color: '#00994D',
-        fontWeight: 500,
-        border: '1px solid rgba(224, 224, 224, 1)',
+        ...bodyOddColorStyle,
+        ...commonCellStyle,
     },
 }))(TableCell);
 
